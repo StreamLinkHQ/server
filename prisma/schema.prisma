@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  walletAddress String
+  accounts      Account[]
+  products      Product[]
+  bids          Bid[]
+  livestreams   LiveStream[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Product {
+  id            String  @id @default(cuid())
+  image         String
+  name          String
+  userId        String
+  price         Int
+  streamType    String
+  description   String?
+  liveStreamName String
+  bids          Bid[]
+  auctionStarted DateTime?
+  auctionEnded DateTime?
+
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model Bid {
+  id          String  @id @default(cuid())
+  productId   String
+  userId      String
+  price       Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model LiveStream {
+  id        String  @id @default(cuid())
+  name      String 
+  userId    String
+  auction   Auction[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model Auction {
+  id        String  @id @default(cuid())
+  liveStreamId String
+
+  livestream LiveStream @relation(fields: [liveStreamId], references: [id], onDelete: Cascade)
+
+}
