@@ -70,3 +70,21 @@ export const getQuiz = async (req: Request, res: Response) => {
     res.status(404).json({ error });
   }
 };
+
+export const updateQuizScores = async (req: Request, res: Response) => {
+  try {
+    
+    const { quizId, score, userId } = req.body;
+    const updatedQuiz = await db.score.create({
+      data: {
+        quizId,
+        score,
+        userId,
+      },
+    });
+    console.log(updatedQuiz);
+    res.status(200).json(updatedQuiz);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+};

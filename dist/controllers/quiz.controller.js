@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getQuiz = exports.createQuiz = void 0;
+exports.updateQuizScores = exports.getQuiz = exports.createQuiz = void 0;
 const app_1 = require("../app");
 const createQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -72,4 +72,22 @@ const getQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getQuiz = getQuiz;
+const updateQuizScores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { quizId, score, userId } = req.body;
+        const updatedQuiz = yield app_1.db.score.create({
+            data: {
+                quizId,
+                score,
+                userId,
+            },
+        });
+        console.log(updatedQuiz);
+        res.status(200).json(updatedQuiz);
+    }
+    catch (error) {
+        res.status(400).json({ error });
+    }
+});
+exports.updateQuizScores = updateQuizScores;
 //# sourceMappingURL=quiz.controller.js.map

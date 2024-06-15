@@ -8,5 +8,6 @@ const quiz_controller_1 = require("../controllers/quiz.controller");
 const router = express_1.default.Router();
 router.post("/", quiz_controller_1.createQuiz);
 router.get("/", quiz_controller_1.getQuiz);
+router.post("/score", quiz_controller_1.updateQuizScores);
 exports.default = router;
 //# sourceMappingURL=quiz.route.js.map
