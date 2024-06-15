@@ -17,6 +17,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const user = yield app_1.db.user.findUnique({ where: { email } });
         if (user) {
             res.status(200).json(user);
+            return;
         }
         const newUser = yield app_1.db.user.create({
             data: {

@@ -25,6 +25,7 @@ model User {
   products      Product[]
   bids          Bid[]
   livestreams   LiveStream[]
+  scores  Score[]
 }
 
 model Account {
@@ -79,6 +80,7 @@ model LiveStream {
   name      String 
   userId    String
   auction   Auction[]
+  quiz      Quiz[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -90,4 +92,45 @@ model Auction {
 
   livestream LiveStream @relation(fields: [liveStreamId], references: [id], onDelete: Cascade)
 
+}
+
+model Quiz {
+  id        Int       @id @default(autoincrement())
+  title     String
+  questions Question[]
+  description   String?
+  liveStreamId String
+  quizDuration Int
+  pointsPerQuestion Int
+  reward  Int
+  scores  Score[]
+
+  livestream LiveStream @relation(fields: [liveStreamId], references: [id])
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  text      String
+  quizId    Int
+  options   QuestionOption[]
+
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+}
+
+model QuestionOption {
+  id          Int      @id @default(autoincrement())
+  text        String
+  questionId  Int
+  isCorrect   Boolean  @default(false)
+  question    Question @relation(fields: [questionId], references: [id])
+}
+
+model Score {
+   id       String    @id @default(cuid())
+   quizId   Int
+   score    Int
+   userId   String
+
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -8,6 +8,7 @@ export const createUser = async (req: Request, res: Response) => {
 
     if (user) {
       res.status(200).json(user);
+      return
     }
     const newUser = await db.user.create({
       data: {
