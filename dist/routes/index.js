@@ -23,8 +23,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QuizRouter = exports.LiveStreamRouter = exports.UserRouter = void 0;
+exports.PaymentRouter = exports.QuizRouter = exports.LiveStreamRouter = exports.UserRouter = void 0;
 exports.UserRouter = __importStar(require("./user.route"));
 exports.LiveStreamRouter = __importStar(require("./livestream.route"));
 exports.QuizRouter = __importStar(require("./quiz.route"));
+exports.PaymentRouter = __importStar(require("./payment.route"));
 //# sourceMappingURL=index.js.map

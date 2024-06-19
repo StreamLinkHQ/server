@@ -32,6 +32,7 @@ function main() {
         app.use("/api/user", routes_1.UserRouter.default);
         app.use("/api/livestream", routes_1.LiveStreamRouter.default);
         app.use("/api/quiz", routes_1.QuizRouter.default);
+        app.use("/api/pay", routes_1.PaymentRouter.default);
         // Catch unregistered routes
         app.all("*", (req, res) => {
             res.status(404).json({ error: `Route ${req.originalUrl} not found` });

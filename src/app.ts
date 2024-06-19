@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import { UserRouter, LiveStreamRouter, QuizRouter } from "./routes";
+import { UserRouter, LiveStreamRouter, QuizRouter, PaymentRouter } from "./routes";
 
 export const db = new PrismaClient();
 
@@ -23,6 +23,7 @@ async function main() {
   app.use("/api/user", UserRouter.default);
   app.use("/api/livestream", LiveStreamRouter.default);
   app.use("/api/quiz", QuizRouter.default);
+  app.use("/api/pay", PaymentRouter.default);
 
   // Catch unregistered routes
   app.all("*", (req: Request, res: Response) => {
