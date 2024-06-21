@@ -32,6 +32,7 @@ const transferSplToken = (amount, walletAddress, tokenName) => __awaiter(void 0,
         const destinationTokenAccount = yield (0, spl_token_1.getOrCreateAssociatedTokenAccount)(connection, sender, tokenMintAccount, recipient);
         const signature = yield (0, spl_token_1.transfer)(connection, sender, sourceTokenAccount.address, destinationTokenAccount.address, sender, amount * MINOR_UNITS_PER_MAJOR_UNITS);
         console.log(`✅ Transaction confirmed, explorer link is: ${signature}!`);
+        return signature;
     }
     catch (error) {
         console.log("Error: ", error);
