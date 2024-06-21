@@ -16,7 +16,6 @@ const getKeypair = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!privateKey) {
         throw new Error("Private key not provided");
     }
-    console.log(privateKey);
     let secretKeyArray = JSON.parse(privateKey);
     const payer = yield web3_js_1.Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
     return payer;

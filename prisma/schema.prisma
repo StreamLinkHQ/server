@@ -25,7 +25,8 @@ model User {
   products      Product[]
   bids          Bid[]
   livestreams   LiveStream[]
-  scores  Score[]
+  scores        Score[]
+  transaction   Transaction[]
 }
 
 model Account {
@@ -133,4 +134,15 @@ model Score {
 
   quiz      Quiz     @relation(fields: [quizId], references: [id])
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  userId   String
+  signature String
+  createdAt DateTime
+  amount   Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }

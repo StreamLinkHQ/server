@@ -50,6 +50,7 @@ export const transferSplToken = async (
       amount * MINOR_UNITS_PER_MAJOR_UNITS
     );
     console.log(`✅ Transaction confirmed, explorer link is: ${signature}!`);
+    return signature
   } catch (error) {
     console.log("Error: ", error);
   }

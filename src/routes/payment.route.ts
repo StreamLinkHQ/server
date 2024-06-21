@@ -3,7 +3,7 @@ import { payWinners } from "../controllers/payment.controller";
 
 const router = express.Router()
 
-router.get("/", payWinners)
+router.post("/", payWinners)
 
 
 export default router
