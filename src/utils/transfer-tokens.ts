@@ -47,7 +47,7 @@ export const transferSplToken = async (
       sourceTokenAccount.address,
       destinationTokenAccount.address,
       sender,
-      amount * MINOR_UNITS_PER_MAJOR_UNITS
+      amount * 100 * MINOR_UNITS_PER_MAJOR_UNITS
     );
     console.log(`✅ Transaction confirmed, explorer link is: ${signature}!`);
     return signature

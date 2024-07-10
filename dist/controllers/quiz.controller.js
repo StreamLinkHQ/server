@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateQuizScores = exports.getQuiz = exports.createQuiz = void 0;
+exports.getQuizScores = exports.updateQuizScores = exports.getQuiz = exports.createQuiz = void 0;
 const app_1 = require("../app");
 const createQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, description, reward, quizDuration, pointsPerQuestion, questions, liveStreamId, } = req.body;
+        const { title, description, reward, quizDuration, pointsPerQuestion, questions, liveStreamId, numberOfWinners } = req.body;
         const liveStream = yield app_1.db.liveStream.findFirst({
             where: {
                 name: liveStreamId,
@@ -26,6 +26,7 @@ const createQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 reward,
                 quizDuration,
                 pointsPerQuestion,
+                numberOfWinners,
                 questions: {
                     create: questions.map((e) => ({
                         text: e.text,
@@ -90,4 +91,33 @@ const updateQuizScores = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.updateQuizScores = updateQuizScores;
+const getQuizScores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { meetingId } = req.query;
+        const liveStream = yield app_1.db.liveStream.findFirst({
+            where: {
+                name: meetingId,
+            },
+        });
+        const quiz = yield app_1.db.quiz.findFirst({
+            where: {
+                liveStreamId: liveStream.id,
+            },
+        });
+        const quizScores = yield app_1.db.score.findMany({
+            where: {
+                quizId: quiz.id,
+            },
+            include: {
+                user: true,
+                quiz: true
+            },
+        });
+        res.status(200).json(quizScores);
+    }
+    catch (error) {
+        res.status(400).json({ error });
+    }
+});
+exports.getQuizScores = getQuizScores;
 //# sourceMappingURL=quiz.controller.js.map

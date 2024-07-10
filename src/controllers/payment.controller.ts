@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { db } from "../app";
 import { transferSplToken } from "../utils";
 
 export const payWinners = async (req: Request, res: Response) => {
@@ -6,7 +7,20 @@ export const payWinners = async (req: Request, res: Response) => {
     const { recipients, tokenName } = req.body;
     console.log(recipients);
     for (const r of recipients) {
-      await transferSplToken(r.amount, r.wallet, tokenName);
+      const signature = await transferSplToken(r.amount, r.wallet, tokenName);
+      const newTransaction = await db.transaction.create({
+        data: {
+          signature,
+          amount: r.amount,
+          createdAt: new Date(),
+          user: {
+            connect: {
+              id: r.userId
+            }
+          }
+        }
+      })
+      console.log(newTransaction)
     }
     res.status(200).json({ data: "Payment successful" });
   } catch (error) {

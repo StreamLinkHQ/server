@@ -11,6 +11,7 @@ export const createQuiz = async (req: Request, res: Response) => {
       pointsPerQuestion,
       questions,
       liveStreamId,
+      numberOfWinners
     } = req.body;
 
     const liveStream = await db.liveStream.findFirst({
@@ -26,6 +27,7 @@ export const createQuiz = async (req: Request, res: Response) => {
         reward,
         quizDuration,
         pointsPerQuestion,
+        numberOfWinners,
         questions: {
           create: questions.map((e: any) => ({
             text: e.text,
@@ -73,7 +75,6 @@ export const getQuiz = async (req: Request, res: Response) => {
 
 export const updateQuizScores = async (req: Request, res: Response) => {
   try {
-    
     const { quizId, score, userId } = req.body;
     const updatedQuiz = await db.score.create({
       data: {
@@ -84,6 +85,34 @@ export const updateQuizScores = async (req: Request, res: Response) => {
     });
     console.log(updatedQuiz);
     res.status(200).json(updatedQuiz);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+};
+
+export const getQuizScores = async (req: Request, res: Response) => {
+  try {
+    const { meetingId } = req.query;
+    const liveStream = await db.liveStream.findFirst({
+      where: {
+        name: meetingId as string,
+      },
+    });
+    const quiz = await db.quiz.findFirst({
+      where: {
+        liveStreamId: liveStream.id,
+      },
+    });
+    const quizScores = await db.score.findMany({
+      where: {
+        quizId: quiz.id,
+      },
+      include: {
+        user: true,
+        quiz: true
+      },
+    });
+    res.status(200).json(quizScores);
   } catch (error) {
     res.status(400).json({ error });
   }

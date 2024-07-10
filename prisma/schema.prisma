@@ -103,6 +103,7 @@ model Quiz {
   liveStreamId String
   quizDuration Int
   pointsPerQuestion Int
+  numberOfWinners   Int
   reward  Int
   scores  Score[]
 

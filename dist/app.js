@@ -14,19 +14,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.db = void 0;
 const express_1 = __importDefault(require("express"));
+const http_1 = require("http");
 const cors_1 = __importDefault(require("cors"));
 const client_1 = require("@prisma/client");
 const routes_1 = require("./routes");
+const websocket_1 = __importDefault(require("./websocket"));
 exports.db = new client_1.PrismaClient();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+const httpServer = (0, http_1.createServer)(app);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         app.use(express_1.default.json());
-        console.log(yield exports.db.account.count());
+        // console.log(await db.account.count())
         const corsOptions = {
             origin: ["http://localhost:5173"],
         };
+        (0, websocket_1.default)(httpServer);
         app.use((0, cors_1.default)(corsOptions));
         // Register API routes
         app.use("/api/user", routes_1.UserRouter.default);
@@ -37,7 +41,7 @@ function main() {
         app.all("*", (req, res) => {
             res.status(404).json({ error: `Route ${req.originalUrl} not found` });
         });
-        app.listen(port, () => {
+        httpServer.listen(port, () => {
             console.log(`Server is listening on port ${port}`);
         });
     });
@@ -51,10 +55,4 @@ main()
     yield exports.db.$disconnect();
     process.exit(1);
 }));
-// app.enableCors({
-//   origin: ['http://localhost:3000', "https://ofibox.vercel.app"],
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
-//   credentials: true,
-// });
 //# sourceMappingURL=app.js.map

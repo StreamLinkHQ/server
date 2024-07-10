@@ -10,13 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.payWinners = void 0;
+const app_1 = require("../app");
 const utils_1 = require("../utils");
 const payWinners = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { recipients, tokenName } = req.body;
         console.log(recipients);
         for (const r of recipients) {
-            yield (0, utils_1.transferSplToken)(r.amount, r.wallet, tokenName);
+            const signature = yield (0, utils_1.transferSplToken)(r.amount, r.wallet, tokenName);
+            const newTransaction = yield app_1.db.transaction.create({
+                data: {
+                    signature,
+                    amount: r.amount,
+                    createdAt: new Date(),
+                    user: {
+                        connect: {
+                            id: r.userId
+                        }
+                    }
+                }
+            });
+            console.log(newTransaction);
         }
         res.status(200).json({ data: "Payment successful" });
     }
