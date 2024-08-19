@@ -19,7 +19,6 @@ const httpServer = createServer(app);
 async function main() {
   app.use(express.json());
 
-  // console.log(await db.account.count())
 
   const corsOptions = {
     origin: ["http://localhost:5173"],
