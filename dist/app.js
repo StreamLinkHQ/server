@@ -26,17 +26,17 @@ const httpServer = (0, http_1.createServer)(app);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         app.use(express_1.default.json());
-        // console.log(await db.account.count())
         const corsOptions = {
-            origin: ["http://localhost:5173"],
+            // origin: ["http://localhost:5173"],
+            origin: ["*"]
         };
         (0, websocket_1.default)(httpServer);
         app.use((0, cors_1.default)(corsOptions));
         // Register API routes
-        app.use("/api/user", routes_1.UserRouter.default);
-        app.use("/api/livestream", routes_1.LiveStreamRouter.default);
-        app.use("/api/quiz", routes_1.QuizRouter.default);
-        app.use("/api/pay", routes_1.PaymentRouter.default);
+        app.use("/user", routes_1.UserRouter.default);
+        app.use("/livestream", routes_1.LiveStreamRouter.default);
+        app.use("/quiz", routes_1.QuizRouter.default);
+        app.use("/pay", routes_1.PaymentRouter.default);
         // Catch unregistered routes
         app.all("*", (req, res) => {
             res.status(404).json({ error: `Route ${req.originalUrl} not found` });
