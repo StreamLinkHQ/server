@@ -30,10 +30,10 @@ async function main() {
   app.use(cors(corsOptions));
 
   // Register API routes
-  app.use("/api/user", UserRouter.default);
-  app.use("/api/livestream", LiveStreamRouter.default);
-  app.use("/api/quiz", QuizRouter.default);
-  app.use("/api/pay", PaymentRouter.default);
+  app.use("/user", UserRouter.default);
+  app.use("/livestream", LiveStreamRouter.default);
+  app.use("/quiz", QuizRouter.default);
+  app.use("/pay", PaymentRouter.default);
 
   // Catch unregistered routes
   app.all("*", (req: Request, res: Response) => {
