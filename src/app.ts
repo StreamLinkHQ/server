@@ -22,7 +22,8 @@ async function main() {
 
   const corsOptions = {
     // origin: ["http://localhost:5173"],
-    origin: ["*"]
+    origin: ["https://thestreamlink.com"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
   };
 
   createSocketServer(httpServer);
