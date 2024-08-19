@@ -28,7 +28,8 @@ function main() {
         app.use(express_1.default.json());
         const corsOptions = {
             // origin: ["http://localhost:5173"],
-            origin: ["*"]
+            origin: ["https://thestreamlink.com"],
+            methods: ["GET", "POST", "PUT", "DELETE"],
         };
         (0, websocket_1.default)(httpServer);
         app.use((0, cors_1.default)(corsOptions));
