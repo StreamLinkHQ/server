@@ -27,7 +27,6 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         app.use(express_1.default.json());
         const corsOptions = {
-            // origin: ["http://localhost:5173"],
             origin: ["https://thestreamlink.com"],
             methods: ["GET", "POST", "PUT", "DELETE"],
         };

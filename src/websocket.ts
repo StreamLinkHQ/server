@@ -16,8 +16,10 @@ const createSocketServer = (server) => {
       // Emit an event back to the client
       io.emit("responseEvent", data);
     });
-    socket.on("message", (data) => {
-      io.emit("message", data)
+    socket.on("message", ({ text, sender }) => {
+      console.log("Received custom event: 1", sender);
+      console.log("Received custom event: 2", text);
+      io.emit("message", { text, sender })
     });
     // Handle disconnection
     socket.on("disconnect", () => {
