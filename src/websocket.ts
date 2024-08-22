@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 const createSocketServer = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: ["http://localhost:5173", "https://thestreamlink.com"],
+      origin: ["https://thestreamlink.com"],
     },
   });
 
@@ -16,7 +16,9 @@ const createSocketServer = (server) => {
       // Emit an event back to the client
       io.emit("responseEvent", data);
     });
-
+    socket.on("message", (data) => {
+      io.emit("message", data)
+    });
     // Handle disconnection
     socket.on("disconnect", () => {
       console.log("A user disconnected");

@@ -4,7 +4,7 @@ const socket_io_1 = require("socket.io");
 const createSocketServer = (server) => {
     const io = new socket_io_1.Server(server, {
         cors: {
-            origin: ["http://localhost:5173", "https://thestreamlink.com"],
+            origin: ["https://thestreamlink.com"],
         },
     });
     io.on("connection", (socket) => {
@@ -14,6 +14,9 @@ const createSocketServer = (server) => {
             console.log("Received custom event:", data);
             // Emit an event back to the client
             io.emit("responseEvent", data);
+        });
+        socket.on("message", (data) => {
+            io.emit("message", data);
         });
         // Handle disconnection
         socket.on("disconnect", () => {
